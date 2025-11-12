@@ -4,7 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APK Download App</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .download-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button#download-button {
+            background-color: #27ae60;
+        }
+
+        button#download-button:hover {
+            background-color: #219653;
+        }
+
+        button#install-button {
+            background-color: #e74c3c;
+        }
+
+        button#install-button:hover {
+            background-color: #c0392b;
+        }
+
+        .app-info {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            gap: 10px;
+        }
+
+        .app-info h2 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .app-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .download-modal {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button#download-modal-close,
+        button#download-modal-confirm {
+            padding: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button#download-modal-close:hover,
+        button#download-modal-confirm:hover {
+            background-color: #c0392b;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .modal-footer button {
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-footer button:hover {
+            background-color: #219653;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -29,6 +154,51 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadButton = document.getElementById('download-button');
+            const installButton = document.getElementById('install-button');
+            const fetchApiButton = document.getElementById('fetch-api-button');
+            const downloadModalClose = document.getElementById('download-modal-close');
+            const downloadModalConfirm = document.getElementById('download-modal-confirm');
+            
+            downloadButton.addEventListener('click', function() {
+                downloadAPK();
+            });
+
+            installButton.addEventListener('click', function() {
+                showDownloadModal();
+            });
+
+            fetchApiButton.addEventListener('click', function() {
+                fetchAPPKFromGitHub();
+            });
+
+            downloadModalClose.addEventListener('click', function() {
+                downloadModalConfirm.style.display = 'none';
+            });
+
+            downloadModalConfirm.addEventListener('click', function() {
+                downloadAPK();
+            });
+
+            // Download functionality
+            function downloadAPK() {
+                downloadAPKDialog().then(function(response) {
+                    if (response.success) {
+                        window.location.href = response.url;
+                    } else {
+                        alert('Download failed. Please try again.');
+                    }
+                });
+            }
+
+            function showDownloadModal() {
+                downloadModal.style.display = 'flex';
+                downloadModalClose.style.display = 'none';
+                downloadModalConfirm.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
