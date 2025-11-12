@@ -3,202 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APK Download App</title>
+    <title>Philippines Trivia Game - Download</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
         }
 
         .app-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .app-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 25px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: white;
         }
 
         h1 {
-            text-align: center;
             color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
         }
 
-        .download-options {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
             font-size: 16px;
-            transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #45a049;
+        .download-button {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+            position: relative;
+            overflow: hidden;
         }
 
-        button#download-button {
-            background-color: #27ae60;
+        .download-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
         }
 
-        button#download-button:hover {
-            background-color: #219653;
+        .download-button:active {
+            transform: translateY(0);
         }
 
-        button#install-button {
-            background-color: #e74c3c;
+        .download-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
 
-        button#install-button:hover {
-            background-color: #c0392b;
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .app-info {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #ddd;
-            display: flex;
-            gap: 10px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #ecf0f1;
+            text-align: left;
         }
 
         .app-info h2 {
-            margin-bottom: 10px;
             color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 20px;
         }
 
-        .app-info p {
-            margin: 5px 0;
-            color: #555;
-        }
-
-        .download-modal {
-            margin-top: 20px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .modal-content {
+        .info-item {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f8f9fa;
         }
 
-        button#download-modal-close,
-        button#download-modal-confirm {
-            padding: 10px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .info-label {
+            color: #7f8c8d;
+            font-weight: 500;
         }
 
-        button#download-modal-close:hover,
-        button#download-modal-confirm:hover {
-            background-color: #c0392b;
+        .info-value {
+            color: #2c3e50;
+            font-weight: 600;
         }
 
-        .modal-footer {
+        .status-message {
             margin-top: 20px;
-            text-align: right;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
         }
 
-        .modal-footer button {
-            padding: 10px 20px;
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
         }
 
-        .modal-footer button:hover {
-            background-color: #219653;
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-message.show {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <h1>Download Your APK</h1>
-        <div class="download-options">
-            <button id="download-button">Download Now</button>
-            <button id="install-button">Install from Google Play</button>
-            <button id="fetch-api-button">Fetch APK from GitHub</button>
-        </div>
+        <div class="app-icon">📱</div>
+        <h1>Philippines Trivia Game</h1>
+        <p class="subtitle">Test your knowledge about the Philippines!</p>
+        
+        <button id="downloadButton" class="download-button" onclick="downloadAPK()">
+            <span id="buttonText">Download APK</span>
+            <div id="loadingSpinner" class="loading-spinner"></div>
+        </button>
+
+        <div id="statusMessage" class="status-message"></div>
+
         <div class="app-info">
             <h2>App Information</h2>
-            <p>Version: 1.0.0</p>
-            <p>Released: 2023-11-12</p>
-            <p>Requires: Android 11+</p>
-            <p>Permissions: <span id="permissions-text">Requires Google Play Services</span></p>
-        </div>
-        <div class="download-modal">
-            <div class="modal-content">
-                <button id="download-modal-close">Close</button>
-                <button id="download-modal-confirm">Download APK</button>
+            <div class="info-item">
+                <span class="info-label">Version:</span>
+                <span class="info-value">1.0.0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Size:</span>
+                <span class="info-value">~15 MB</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Requires:</span>
+                <span class="info-value">Android 5.0+</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Downloads:</span>
+                <span class="info-value">1,000+</span>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const downloadButton = document.getElementById('download-button');
-            const installButton = document.getElementById('install-button');
-            const fetchApiButton = document.getElementById('fetch-api-button');
-            const downloadModalClose = document.getElementById('download-modal-close');
-            const downloadModalConfirm = document.getElementById('download-modal-confirm');
+        const APK_URL = 'https://raw.githubusercontent.com/attendnace/Philippines-Trivia-Game/main/Philippines%20Trivia.apk';
+        
+        function downloadAPK() {
+            const button = document.getElementById('downloadButton');
+            const buttonText = document.getElementById('buttonText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const statusMessage = document.getElementById('statusMessage');
+
+            // Show loading state
+            button.disabled = true;
+            buttonText.textContent = 'Preparing Download...';
+            loadingSpinner.style.display = 'block';
+            statusMessage.classList.remove('show', 'success', 'error');
+
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.href = APK_URL;
+            link.download = 'Philippines-Trivia-Game.apk'; // Suggested filename
             
-            downloadButton.addEventListener('click', function() {
-                downloadAPK();
-            });
+            // Simulate a short delay for better UX
+            setTimeout(() => {
+                try {
+                    // Trigger the download
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Show success message
+                    statusMessage.textContent = 'Download started! Check your notifications.';
+                    statusMessage.classList.add('show', 'success');
+                    
+                    // Reset button
+                    button.disabled = false;
+                    buttonText.textContent = 'Download APK';
+                    loadingSpinner.style.display = 'none';
+                    
+                    // Hide message after 5 seconds
+                    setTimeout(() => {
+                        statusMessage.classList.remove('show');
+                    }, 5000);
+                    
+                } catch (error) {
+                    // Show error message
+                    statusMessage.textContent = 'Download failed. Please try again or check your connection.';
+                    statusMessage.classList.add('show', 'error');
+                    
+                    // Reset button
+                    button.disabled = false;
+                    buttonText.textContent = 'Download APK';
+                    loadingSpinner.style.display = 'none';
+                    
+                    console.error('Download error:', error);
+                }
+            }, 1000); // 1 second delay for UX
+        }
 
-            installButton.addEventListener('click', function() {
-                showDownloadModal();
-            });
-
-            fetchApiButton.addEventListener('click', function() {
-                fetchAPPKFromGitHub();
-            });
-
-            downloadModalClose.addEventListener('click', function() {
-                downloadModalConfirm.style.display = 'none';
-            });
-
-            downloadModalConfirm.addEventListener('click', function() {
-                downloadAPK();
-            });
-
-            // Download functionality
-            function downloadAPK() {
-                downloadAPKDialog().then(function(response) {
-                    if (response.success) {
-                        window.location.href = response.url;
-                    } else {
-                        alert('Download failed. Please try again.');
+        // Optional: Check if APK exists before allowing download
+        function verifyAPK() {
+            fetch(APK_URL, { method: 'HEAD' })
+                .then(response => {
+                    if (!response.ok) {
+                        const button = document.getElementById('downloadButton');
+                        button.disabled = true;
+                        button.textContent = 'APK Not Available';
+                        showStatus('APK file not found on server.', 'error');
                     }
+                })
+                .catch(() => {
+                    const button = document.getElementById('downloadButton');
+                    button.disabled = true;
+                    button.textContent = 'Verification Failed';
+                    showStatus('Cannot verify APK availability.', 'error');
                 });
-            }
+        }
 
-            function showDownloadModal() {
-                downloadModal.style.display = 'flex';
-                downloadModalClose.style.display = 'none';
-                downloadModalConfirm.style.display = 'none';
-            }
-        });
+        function showStatus(message, type) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type} show`;
+            setTimeout(() => {
+                statusMessage.classList.remove('show');
+            }, 5000);
+        }
+
+        // Run verification on page load
+        window.addEventListener('DOMContentLoaded', verifyAPK);
     </script>
 </body>
 </html>
